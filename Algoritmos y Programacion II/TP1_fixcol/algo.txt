@@ -1,0 +1,20 @@
+Hola
+Como
+Estas
+bool es_numero(int* numero){
+    if(*numero <= 0){
+        fprintf(stderr,"Error: Cantidad erronea de parametros\n");
+        return false;
+    }
+    return true;
+}
+
+bool verificacion_parametros(int cantidad_de_parametros, char* parametros[], int* cantidad_lineas){
+    if((2 | 3) != cantidad_de_parametros){
+        fprintf(stderr, "Error: Cantidad erronea de parametros\n");
+        return false;
+    }
+    *cantidad_lineas = atoi(parametros[1]);
+    return es_numero(cantidad_lineas);
+}
+
