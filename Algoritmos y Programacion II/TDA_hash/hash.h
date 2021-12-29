@@ -51,8 +51,8 @@ size_t hash_cantidad(const hash_t *hash);
 
 /* Destruye la estructura liberando la memoria pedida y llamando a la función
  * destruir para cada par (clave, dato).
- * Pre: La estructura hash fue inicializada
- * Post: La estructura hash fue destruida
+ * Pre: La estructura hash fue inicializada.
+ * Post: La estructura hash fue destruida.
  */
 void hash_destruir(hash_t *hash);
 
@@ -71,6 +71,6 @@ const char *hash_iter_ver_actual(const hash_iter_t *iter);
 bool hash_iter_al_final(const hash_iter_t *iter);
 
 // Destruye iterador
-void hash_iter_destruir(hash_iter_t *iter);
+void hash_iter_destruir(hash_iter_t* iter);
 
-#endif  // HASH_H
+#endif // HASH_H
