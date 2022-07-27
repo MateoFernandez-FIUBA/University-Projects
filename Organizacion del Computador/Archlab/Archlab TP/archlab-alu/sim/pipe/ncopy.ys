@@ -1,0 +1,130 @@
+#/* $begin ncopy-ys */
+##################################################################
+# ncopy.ys - Copy a src block of len words to dst.
+# Return the number of positive words (>0) contained in src.
+#
+# Mateo Fernandez (107603), Nicolas Puccar (107635).
+#
+# Describe how and why you modified the baseline code.
+#
+##################################################################
+# Do not modify this portion
+# Function prologue.
+# %rdi = src, %rsi = dst, %rdx = len
+ncopy:
+
+##################################################################
+# You can modify this portion
+	# Loop header
+	xorq    %rax, %rax
+    iaddq    $-8, %rdx
+    andq    %rdx, %rdx
+    jl    Aux
+
+
+Loop:	
+	mrmovq    (%rdi), %r10	    # read val from src...
+	mrmovq  0x8(%rdi), %r9	    # ...and store it to dst
+	andq    %r10, %r10		    # val <= 0?
+	rmmovq  %r10, (%rsi)		
+	jle     Npos1               # if so, goto Npos:
+	iaddq   $1, %rax	        # count++
+Npos1:	
+	andq    %r9, %r9
+    rmmovq    %r9, 0x8(%rsi)
+    jle    Npos2
+    iaddq    $1, %rax
+Npos2:
+	mrmovq    0x16(%rdi), %r10
+    mrmovq    0x24(%rdi), %r9
+    andq    %r10, %r10
+    rmmovq    %r10, 0x16(%rsi)
+    jle    Npos3
+    iaddq    $1, %rax
+Npos3:	
+	andq    %r9, %r9
+    rmmovq    %r9, 0x24(%rsi)
+    jle    Npos4
+    iaddq    $1, %rax
+Npos4:
+	mrmovq    0x32(%rdi), %r10
+    mrmovq    0x40(%rdi), %r9
+    andq    %r10, %r10
+    rmmovq    %r10, 0x32(%rsi)
+    jle    Npos5
+    iaddq    $1, %rax
+Npos5:	
+	andq    %r9, %r9
+    rmmovq    %r9, 0x40(%rsi)
+    jle    Npos6
+    iaddq    $1, %rax
+Npos6:
+	mrmovq    0x48(%rdi), %r10
+    mrmovq    0x56(%rdi), %r9
+    andq    %r10, %r10
+    rmmovq    %r10, 0x48(%rsi)
+    jle    Npos7
+    iaddq    $1, %rax
+Npos7:	
+	andq    %r9, %r9
+    rmmovq  %r9, 0x56(%rsi)
+    jle     Npos8
+    iaddq   $1, %rax
+Npos8:
+	iaddq  $64, %rdi
+	iaddq  $64, %rsi
+	iaddq  $-8, %rdx
+	jle    Loop
+
+Aux:
+	xorq    %rax, %rax
+    iaddq    $-2, %rdx
+    andq    %rdx, %rdx
+    jl    Done
+
+Loop2:	
+	mrmovq    (%rdi), %r10
+	mrmovq  0x8(%rdi), %r9
+	andq    %r10, %r10
+	rmmovq  %r10, (%rsi)
+	jle     Rpos1
+	iaddq   $1, %rax
+
+Rpos1:
+	andq    %r9, %r9
+    rmmovq  %r9, 0x8(%rsi)
+    jle     Npos2
+    iaddq   $1, %rax
+
+Rpos2:
+	iaddq  $16, %rdi
+	iaddq  $16, %rsi
+	iaddq  $-2, %rdx
+	jle    Loop2
+
+Aux2:
+	xorq    %rax, %rax
+    iaddq    $-1, %rdx
+    andq    %rdx, %rdx
+    jl    Done
+
+Loop3:
+	mrmovq    (%rdi), %r10
+	andq    %r10, %r10
+	rmmovq  %r10, (%rsi)
+	jle     Done
+	iaddq   $1, %rax
+
+
+
+
+
+##################################################################
+# Do not modify the following section of code
+# Function epilogue.
+Done:
+	ret
+##################################################################
+# Keep the following label at the end of your function
+End:
+#/* $end ncopy-ys */

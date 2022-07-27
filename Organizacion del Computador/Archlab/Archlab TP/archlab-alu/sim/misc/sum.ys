@@ -1,0 +1,46 @@
+# Execution begins at 0 
+			.pos 0
+init: 		irmovq Stack, %rsp	 	# set up pointer to stack
+			irmovq Stack, %rbp 	# set up base pointer 
+			call Main 		# execute main
+			halt 			# end program 
+
+#Linked list
+			.align 8
+ele1:
+			.quad 0x00a
+			.quad ele2
+ele2:
+			.quad 0x0b0
+			.quad ele3
+ele3:
+			.quad 0xc00
+			.quad 0
+
+Main: 		pushq %rbp 
+			rrmovq %rsp,%rbp
+			irmovq ele1,%rax
+			pushq %rax 			# push ele1
+			call sum_list			# sum_list(ele1) 
+			rrmovq %rbp,%rsp
+			popq %rbp
+			ret
+
+# int sum_list(list_ptr ls)
+sum_list: 	pushq %rbp 
+			rrmovq %rsp,%rbp
+			mrmovq 4(%rbp),%rcx 	# %rcx = ele1
+			xorq %rax, %rax		# %rax = 0
+			andq %rcx, %rcx 	# test %rcx
+			je End
+Loop:		mrmovq (%rcx),%rsi		# get *ls
+			addq %rsi,%rax		# add to sum
+			mrmovq 2(%rcx), %rcx 	# ls = ls->next
+			andq %rcx, %rcx 	# test %rcx
+			jne Loop
+End: 		rrmovq %rbp,%rsp
+			popq %rbp
+			ret
+
+			.pos 0x100
+Stack:
